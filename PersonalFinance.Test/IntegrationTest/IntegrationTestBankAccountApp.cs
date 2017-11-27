@@ -9,7 +9,7 @@ namespace PersonalFinance.Test
     [TestFixture]
     public class IntegrationTestBankAccountApp
     {
-        //[Test]
+        [Test]
         public void ShouldAdd()
         {
             AutoMapperConfig.RegisterMappings();
@@ -20,9 +20,9 @@ namespace PersonalFinance.Test
                 AccountDigit = "1",
                 AgencyDigit = "4",
                 AgencyNumber = "35552",
-                Bank = 0,
-                Amount = 100,
-                Type = 0
+                Bank = 1,
+                Amount = 125,
+                Type = 1
             });
 
         }

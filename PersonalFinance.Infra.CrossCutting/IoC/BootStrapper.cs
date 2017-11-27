@@ -1,5 +1,6 @@
 using System;
 using PersonalFinance.Application.App;
+using PersonalFinance.Application.AutoMapper;
 using PersonalFinance.Application.Interfaces;
 using PersonalFinance.Domain.Interfaces.Repository;
 using PersonalFinance.Domain.Interfaces.Services;
@@ -35,6 +36,7 @@ namespace PersonalFinance.Infra.CrossCutting.IoC
             _container = new Container();
             _container.Register<IUnitOfWork, UnitOfWork>(Lifestyle.Singleton);
             _container.Register<IContext, DapperContext>(Lifestyle.Singleton);
+            _container.Register<IConverter, AutoMapperConverter>(Lifestyle.Singleton);
             
             _container.Register(typeof(IRepositoryBase<>), typeof(RepositoryBase<>), Lifestyle.Singleton);
             _container.Register<IRepositoryBankAccount, RepositoryBankAccount>(Lifestyle.Singleton);

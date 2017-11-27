@@ -13,36 +13,36 @@ namespace PersonalFinance.Application.App
         where DTO : class
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly IMapper _map;
+        protected readonly IConverter _converter;
         private readonly IServiceBase<TEntity> _service;
 
-        public AppBase(IServiceBase<TEntity> service, IUnitOfWork unitOfWork)
+        public AppBase(IServiceBase<TEntity> service, IUnitOfWork unitOfWork, IConverter converter)
         {
             _service = service;
             _unitOfWork = unitOfWork;
-            _map = AutoMapperConfig.IMap;
+            _converter = converter;
         }
 
         public DTO Add(DTO dto)
         {
-            var entity = _map.Map<DTO, TEntity>(dto);
+            var entity = _converter.ConvertDtoToTEntity<DTO, TEntity>(dto);
 
             _unitOfWork.StartTransaction();
             entity = _service.Add(entity);
             _unitOfWork.Commit();
 
-            return _map.Map<TEntity, DTO>(entity);
+            return _converter.ConvertEntityToDto<TEntity, DTO>(entity);
         }
 
         public IEnumerable<DTO> GetAll() =>
-            _map.Map<IEnumerable<TEntity>, IEnumerable<DTO>>(_service.GetAll());
+            _converter.ConvertEntityToDto<TEntity, DTO>(_service.GetAll());
 
         public DTO GetById(int id) =>
-            _map.Map<TEntity, DTO>(_service.GetById(id));
+            _converter.ConvertEntityToDto<TEntity, DTO>(_service.GetById(id));
 
         public void Remove(DTO dto)
         {
-            var entity = _map.Map<DTO, TEntity>(dto);
+            var entity = _converter.ConvertDtoToTEntity<DTO, TEntity>(dto);
 
             _unitOfWork.StartTransaction();
             _service.Remove(entity);
@@ -51,7 +51,7 @@ namespace PersonalFinance.Application.App
 
         public void Update(DTO dto)
         {
-            var entity = _map.Map<DTO, TEntity>(dto);
+            var entity = _converter.ConvertDtoToTEntity<DTO, TEntity>(dto);
 
             _unitOfWork.StartTransaction();
             _service.Update(entity);
